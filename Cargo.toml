@@ -21,4 +21,6 @@ libc = "0.2"
 [package.metadata.release]
 pre-release-commit-message = "Release {{version}}"
 pro-release-commit-message = "Bump version to {{version}}"
-tag-message                = "version {{version}}"
+tag-prefix                 = "v"
+tag-message                = "Version {{version}}"
+dev-version-ext            = "dev"
