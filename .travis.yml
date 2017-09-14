@@ -1,0 +1,10 @@
+language: rust
+
+# Test on the latest versions of all channels.
+rust:
+  - stable
+  - beta
+  - nightly
+
+script:
+  - cargo test
