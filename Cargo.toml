@@ -13,7 +13,8 @@ keywords   = ["inotify", "linux"]
 categories = ["external-ffi-bindings", "filesystem"]
 
 [badges]
-travis-ci = { repository = "inotify-rs/inotify-sys" }
+maintenance = { status = "actively-developed" }
+travis-ci   = { repository = "inotify-rs/inotify-sys" }
 
 [dependencies]
 libc = "0.2"
