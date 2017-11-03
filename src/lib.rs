@@ -102,6 +102,7 @@ pub const IN_MODIFY: uint32_t = 0x00000002;
 /// Event: Metadata has changed.
 ///
 /// This can include e.g.
+///
 /// - permissions, see [chmod(2)];
 /// - timestamps, see [utimensat(2)];
 /// - extended attributes, see [setxattr(2)];
