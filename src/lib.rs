@@ -32,8 +32,8 @@
 //!
 //! [`inotify_init1()`]: fn.inotify_init1.html
 //! [`inotify_add_watch()`]: fn.inotify_add_watch.html
-//! [`read()`]: ../../libc/fn.read.html
-//! [`close()`]: ../../libc/fn.close.html
+//! [`read()`]: ../libc/fn.read.html
+//! [`close()`]: ../libc/fn.close.html
 //! [inotify(7)]: http://man7.org/linux/man-pages/man7/inotify.7.html
 
 
