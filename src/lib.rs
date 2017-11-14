@@ -252,7 +252,9 @@ pub const IN_Q_OVERFLOW: uint32_t = 0x00004000;
 pub const IN_IGNORED: uint32_t = 0x00008000;
 
 
-/// Describes an event.
+/// Describes a file system event
+///
+/// From [inotify(7)]:
 ///
 /// > To determine what events have occurred, an application [read(2)]s
 /// > from the inotify file descriptor.  If no events have so far occurred,
@@ -263,24 +265,70 @@ pub const IN_IGNORED: uint32_t = 0x00008000;
 /// > Each successful [read(2)] returns a buffer containing one or more of
 /// > this structure.
 ///
+/// [inotify(7)]: http://man7.org/linux/man-pages/man7/inotify.7.html
 /// [read(2)]: http://man7.org/linux/man-pages/man2/read.2.html
 /// [signal(7)]: http://man7.org/linux/man-pages/man7/signal.7.html
 #[allow(non_camel_case_types)]
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
 pub struct inotify_event {
-    /// Identifies the watch for which this event occurs.
+    /// Identifies the watch for which this event occurs
     ///
-    /// It is one of the watch descriptors returned by a previous call
-    /// to [`inotify_add_watch()`].
+    /// This is one of the watch descriptors returned by a previous call to
+    /// [`inotify_add_watch()`].
     ///
     /// [`inotify_add_watch()`]: fn.inotify_add_watch.html
     pub wd: c_int,
 
-    /// Contains bits that describe the event that occurred.
+    /// Describes the type file system event
+    ///
+    /// One of the following bits will be set, to identify the type of event:
+    ///
+    /// - [`IN_ACCESS`]
+    /// - [`IN_ATTRIB`]
+    /// - [`IN_CLOSE_NOWRITE`]
+    /// - [`IN_CLOSE_WRITE`]
+    /// - [`IN_CREATE`]
+    /// - [`IN_DELETE`]
+    /// - [`IN_DELETE_SELF`]
+    /// - [`IN_IGNORED`]
+    /// - [`IN_MODIFY`]
+    /// - [`IN_MOVED_FROM`]
+    /// - [`IN_MOVED_TO`]
+    /// - [`IN_MOVE_SELF`]
+    /// - [`IN_OPEN`]
+    /// - [`IN_Q_OVERFLOW`]
+    /// - [`IN_UNMOUNT`]
+    ///
+    /// Some constants cover multiple bits, and can be used for a less precise
+    /// check of the event type:
+    ///
+    /// - [`IN_CLOSE`]
+    /// - [`IN_MOVE`]
+    ///
+    /// In addition, the [`IN_ISDIR`] bit can be set.
+    ///
+    /// [`IN_ACCESS`]: constant.IN_ACCESS.html
+    /// [`IN_ATTRIB`]: constant.IN_ATTRIB.html
+    /// [`IN_CLOSE`]: constant.IN_CLOSE.html
+    /// [`IN_CLOSE_NOWRITE`]: constant.IN_CLOSE_NOWRITE.html
+    /// [`IN_CLOSE_WRITE`]: constant.IN_CLOSE_WRITE.html
+    /// [`IN_CREATE`]: constant.IN_CREATE.html
+    /// [`IN_DELETE`]: constant.IN_DELETE.html
+    /// [`IN_DELETE_SELF`]: constant.IN_DELETE_SELF.html
+    /// [`IN_IGNORED`]: constant.IN_IGNORED.html
+    /// [`IN_ISDIR`]: constant.IN_ISDIR.html
+    /// [`IN_MODIFY`]: constant.IN_MODIFY.html
+    /// [`IN_MOVE`]: constant.IN_MOVE.html
+    /// [`IN_MOVED_FROM`]: constant.IN_MOVED_FROM.html
+    /// [`IN_MOVED_TO`]: constant.IN_MOVED_TO.html
+    /// [`IN_MOVE_SELF`]: constant.IN_MOVE_SELF.html
+    /// [`IN_OPEN`]: constant.IN_OPEN.html
+    /// [`IN_Q_OVERFLOW`]: constant.IN_Q_OVERFLOW.html
+    /// [`IN_UNMOUNT`]: constant.IN_UNMOUNT.html
     pub mask: uint32_t,
 
-    /// A unique integer that connects related events.
+    /// A number that connects related events
     ///
     /// Currently used only for rename events. A related pair of
     /// [`IN_MOVED_FROM`] and [`IN_MOVED_TO`] events will have the same,
@@ -290,7 +338,7 @@ pub struct inotify_event {
     /// [`IN_MOVED_TO`]: constant.IN_MOVED_TO.html
     pub cookie: uint32_t,
 
-    /// The length of `name`.
+    /// The length of `name`
     ///
     /// Used to determine the size of this structure. When `name`
     /// isn't present (`name` is only present when an event occurs
@@ -303,7 +351,7 @@ pub struct inotify_event {
     /// > null-terminated, and may include further null bytes ('\0') to
     /// > align subsequent reads to a suitable address boundary.
     ///
-    /// The `name` field must be ommited in this definition.
+    /// The `name` field has been ommited in this struct's definition.
     pub len: uint32_t,
 }
 
