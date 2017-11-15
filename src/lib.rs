@@ -357,27 +357,124 @@ pub struct inotify_event {
 
 
 extern {
-    /// Creates an inotify instance.
+    /// Creates an inotify instance
     ///
-    /// Returns a file descriptor referring to the inotify instance.
+    /// If you need more flexibility, consider using [`inotify_init1`] instead.
+    ///
+    /// Returns `-1`, if an error occured, or an inotify file descriptor
+    /// otherwise.
+    ///
+    /// Please refer to the [man page] for additional details.
+    ///
+    /// [`inotify_init1`]: fn.inotify_init1.html
+    /// [man page]: http://man7.org/linux/man-pages/man2/inotify_init.2.html
     pub fn inotify_init() -> c_int;
 
-    /// Creates an inotify instance.
+    /// Creates an inotify instance
     ///
-    /// Also takes a bit mask of flags that provide access to extra
-    /// functionality. Returns a file descriptor.
+    /// Takes an argument to configure the new inotify instance. The following
+    /// flags can be set:
+    ///
+    /// - [`IN_CLOEXEC`]
+    /// - [`IN_NONBLOCK`]
+    ///
+    /// Returns `-1`, if an error occured, or an inotify file descriptor
+    /// otherwise.
+    ///
+    /// Please refer to the [man page] for additional details.
+    ///
+    /// [`IN_CLOEXEC`]: constant.IN_CLOEXEC.html
+    /// [`IN_NONBLOCK`]: constant.IN_NONBLOCK.html
+    /// [man page]: http://man7.org/linux/man-pages/man2/inotify_init1.2.html
     pub fn inotify_init1(flags: c_int) -> c_int;
 
-    /// Manipulates the "watch list" associated with an inotify instance.
+    /// Adds or updates an inotify watch
     ///
-    /// > Each item ("watch") in the watch list specifies the pathname of
-    /// > a file or directory, along with some set of events that the kernel
-    /// > should monitor for the file referred to by that pathname.
+    /// Adds an item to the watch list of an inotify instance, or modifies an
+    /// item on that list. This function takes the following arguments:
     ///
-    /// This function either creates a new watch, or modifies an existing one.
+    /// - `fd` is the file descriptor of the inotify instance (created by
+    ///   [`inotify_init`] or [`inotify_init1`])
+    /// - `pathname` is the path of the file or directory watch
+    /// - `mask` defines the behavior of this function and configures the watch
+    ///
+    /// The following flags in `mask` control the type of events to watch for:
+    ///
+    /// - [`IN_ACCESS`]
+    /// - [`IN_ATTRIB`]
+    /// - [`IN_CLOSE_NOWRITE`]
+    /// - [`IN_CLOSE_WRITE`]
+    /// - [`IN_CREATE`]
+    /// - [`IN_DELETE`]
+    /// - [`IN_DELETE_SELF`]
+    /// - [`IN_MODIFY`]
+    /// - [`IN_MOVED_FROM`]
+    /// - [`IN_MOVED_TO`]
+    /// - [`IN_MOVE_SELF`]
+    /// - [`IN_OPEN`]
+    ///
+    /// The following constants can be used as shortcuts to set multiple event
+    /// flags:
+    ///
+    /// - [`IN_ALL_EVENTS`]
+    /// - [`IN_CLOSE`]
+    /// - [`IN_MOVE`]
+    ///
+    /// In addition, the following flags can be set to control the behaviors of
+    /// the watch and this function:
+    ///
+    /// - [`IN_DONT_FOLLOW`]
+    /// - [`IN_EXCL_UNLINK`]
+    /// - [`IN_MASK_ADD`]
+    /// - [`IN_ONESHOT`]
+    /// - [`IN_ONLYDIR`]
+    ///
+    /// The function returns `-1` if an error occured. Otherwise, it returns a
+    /// watch descriptor that can be used to remove the watch using
+    /// [`inotify_rm_watch`] or identify the watch via [`inotify_event`]'s [wd`]
+    /// field.
+    ///
+    /// Please refer to the [man page] for additional details.
+    ///
+    /// [`inotify_init`]: fn.inotify_init.html
+    /// [`inotify_init1`]: fn.inotify_init1.html
+    /// [`IN_ACCESS`]: constant.IN_ACCESS.html
+    /// [`IN_ATTRIB`]: constant.IN_ATTRIB.html
+    /// [`IN_CLOSE_NOWRITE`]: constant.IN_CLOSE_NOWRITE.html
+    /// [`IN_CLOSE_WRITE`]: constant.IN_CLOSE_WRITE.html
+    /// [`IN_CREATE`]: constant.IN_CREATE.html
+    /// [`IN_DELETE`]: constant.IN_DELETE.html
+    /// [`IN_DELETE_SELF`]: constant.IN_DELETE_SELF.html
+    /// [`IN_MODIFY`]: constant.IN_MODIFY.html
+    /// [`IN_MOVED_FROM`]: constant.IN_MOVED_FROM.html
+    /// [`IN_MOVED_TO`]: constant.IN_MOVED_TO.html
+    /// [`IN_MOVE_SELF`]: constant.IN_MOVE_SELF.html
+    /// [`IN_OPEN`]: constant.IN_OPEN.html
+    /// [`IN_ALL_EVENTS`]: constant.IN_ALL_EVENTS.html
+    /// [`IN_CLOSE`]: constant.IN_CLOSE.html
+    /// [`IN_MOVE`]: constant.IN_MOVE.html
+    /// [`IN_DONT_FOLLOW`]: constant.IN_DONT_FOLLOW.html
+    /// [`IN_EXCL_UNLINK`]: constant.IN_EXCL_UNLINK.html
+    /// [`IN_MASK_ADD`]: constant.IN_MASK_ADD.html
+    /// [`IN_ONESHOT`]: constant.IN_ONESHOT.html
+    /// [`IN_ONLYDIR`]: constant.IN_ONLYDIR.html
+    /// [`inotify_rm_watch`]: fn.inotify_rm_watch.html
+    /// [`inotify_event`]: struct.inotify_event.html
+    /// [`wd`]: struct.inotify_event.html#structfield.wd
+    /// [man page]: http://man7.org/linux/man-pages/man2/inotify_add_watch.2.html
     pub fn inotify_add_watch(fd: c_int, pathname: *const c_char, mask: uint32_t) -> c_int;
 
-    /// Removes an item from an inotify watch list.
+    /// Removes an inotify watch
+    ///
+    /// Removes an item from the watch list of an inotify instance. The inotify
+    /// instance is identified by the `fd` argument. The watch is identified by
+    /// the `wd` argument.
+    ///
+    /// Returns `0` on success, `-1` on failure.
+    ///
+    /// Please refer to the [man page] for additional details.
+    ///
+    /// [man page]: http://man7.org/linux/man-pages/man2/inotify_rm_watch.2.html
     pub fn inotify_rm_watch(fd: c_int, wd: c_int) -> c_int;
 }
 
