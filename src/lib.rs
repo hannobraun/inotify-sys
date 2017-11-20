@@ -46,10 +46,11 @@ use libc::{
     uint32_t };
 
 
-/// Flag: Set the FD_CLOEXEC flag
+/// Set the `FD_CLOEXEC` flag for an inotify instance
 ///
-/// The FD_CLOEXEC flag, or "close-on-exec", changes the
-/// behavior of file descriptor when [execve(2)]'d:
+/// Can be passed to [`inotify_init1`] to set the `FD_CLOEXEC` flag for the
+/// inotify instance. This changes the behavior of file descriptor when
+/// [execve(2)]'d. From [fcntl(2)]:
 ///
 /// > If the FD_CLOEXEC bit is 0, the file descriptor will
 /// > remain open across an [execve(2)], otherwise it will be
@@ -57,49 +58,58 @@ use libc::{
 ///
 /// See [open(2)] and [fcntl(2)] for details.
 ///
+/// [`inotify_init1`]: fn.inotify_init1.html
 /// [execve(2)]: http://man7.org/linux/man-pages/man2/execve.2.html
 /// [open(2)]: http://man7.org/linux/man-pages/man2/open.2.html
 /// [fcntl(2)]: http://man7.org/linux/man-pages/man2/fcntl.2.html
 pub const IN_CLOEXEC: c_int = 0o2000000;
 
-/// Flag: Set the O_NONBLOCK file status flag
+/// Set an inotify instance to non-blocking mode
 ///
-/// The O_NONBLOCK flag changes the behavior of system
-/// calls when accessing files with mandatory locks:
+/// Can be passed to [`inotify_init1`] to set the `O_NONBLOCK` flag for the
+/// inotify instance.
 ///
-/// > By default, both traditional (process-associated) and
-/// > open file description record locks are advisory.  Advisory
-/// > locks are not enforced and are useful only between
-/// > cooperating processes.
-/// >
-/// > Both lock types can also be mandatory. Mandatory locks
-/// > are enforced for all processes. If a process tries to
-/// > perform an incompatible access (e.g., [read(2)] or [write(2)])
-/// > on a file region that has an incompatible mandatory lock,
-/// > then the result depends upon whether the O_NONBLOCK flag
-/// > is enabled for its open file description. If the O_NONBLOCK
-/// > flag is not enabled, then the system call is blocked until
-/// > the lock is removed or converted to a mode that is compatible
-/// > with the access. If the O_NONBLOCK flag is enabled, then the
-/// > system call fails with the error EAGAIN.
+/// See [open(2)] for details.
 ///
-/// See [fcntl(2)] for more details.
-///
-/// [read(2)]:  http://man7.org/linux/man-pages/man2/read.2.html
-/// [write(2)]: http://man7.org/linux/man-pages/man2/write.2.html
-/// [fcntl(2)]: http://man7.org/linux/man-pages/man2/fcntl.2.html
+/// [`inotify_init1`]: fn.inotify_init1.html
+/// [open(2)]: http://man7.org/linux/man-pages/man2/open.2.html
 pub const IN_NONBLOCK: c_int = 0o4000;
 
-/// Event: File was accessed.
+/// Event: File was accessed
 ///
-/// When monitoring a directory, the event may occur both for the
-/// directory itself and the files within.
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event will be triggered only for files
+/// within the directory.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_ACCESS: uint32_t = 0x00000001;
 
-/// Event: File was modified.
+/// Event: File was modified
+///
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event will be triggered only for files
+/// within the directory.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_MODIFY: uint32_t = 0x00000002;
 
-/// Event: Metadata has changed.
+/// Event: Metadata was changed
 ///
 /// This can include e.g.
 ///
@@ -109,146 +119,372 @@ pub const IN_MODIFY: uint32_t = 0x00000002;
 /// - link count, see [link(2)] and [unlink(2)];
 /// - user/group, see [chown(2)].
 ///
-/// When monitoring a directory, the event may occur both for the
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event can be triggered for both for the
 /// directory itself and the files within.
+///
+/// See [man page] for additional details.
 ///
 /// [chmod(2)]: http://man7.org/linux/man-pages/man2/chmod.2.html
 /// [utimensat(2)]: http://man7.org/linux/man-pages/man2/utimensat.2.html
 /// [setxattr(2)]: http://man7.org/linux/man-pages/man2/fsetxattr.2.html
 /// [link(2)]: http://man7.org/linux/man-pages/man2/link.2.html
 /// [unlink(2)]: http://man7.org/linux/man-pages/man2/unlink.2.html
-/// [chown(2)]: http://man7.org/linux/man-pages/man2/lchown.2.html
+/// [chown(2)]: http://man7.org/linux/man-pages/man2/chown.2.html
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_ATTRIB: uint32_t = 0x00000004;
 
-/// Event: File opened for writing was closed.
+/// Event: Writable file was closed
 ///
-/// When monitoring a directory, the event may occur both for the
-/// directory itself and the files within.
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event will be triggered only for files
+/// within the directory.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_CLOSE_WRITE: uint32_t = 0x00000008;
 
-/// Event: File not opened for writing was closed.
+/// Event: Non-writable file or directory was closed
 ///
-/// When monitoring a directory, the event may occur both for the
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event can be triggered for both for the
 /// directory itself and the files within.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_CLOSE_NOWRITE: uint32_t = 0x00000010;
 
-/// Event: File was opened.
+/// Event: File or directory was opened
 ///
-/// When monitoring a directory, the event may occur both for the
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event can be triggered for both for the
 /// directory itself and the files within.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_OPEN: uint32_t = 0x00000020;
 
-/// Event: File or directory was moved away.
+/// Event: File or directory was moved out of watched directory
 ///
-/// When monitoring a directory, the event may occur *only* for
-/// the files within, not the directory itself.
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event will be triggered only for files
+/// within the directory.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_MOVED_FROM: uint32_t = 0x00000040;
 
-/// Event: File or directory was moved in.
+/// Event: File or directory was moved into watched directory
 ///
-/// When monitoring a directory, the event may occur *only* for
-/// the files within, not the directory itself.
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event will be triggered only for files
+/// within the directory.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_MOVED_TO: uint32_t = 0x00000080;
 
-/// Event: File or directory was created.
+/// Event: File or directory was created in watched directory
 ///
 /// This may also include hard links, symlinks, and UNIX sockets.
 ///
-/// When monitoring a directory, the event may occur *only* for
-/// the files within, not the directory itself.
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event will be triggered only for files
+/// within the directory.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_CREATE: uint32_t = 0x00000100;
 
-/// Event: File or directory was deleted.
+/// Event: File or directory in watched directory was deleted
 ///
 /// This may also include hard links, symlinks, and UNIX sockets.
 ///
-/// When monitoring a directory, the event may occur *only* for
-/// the files within, not the directory itself.
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// When monitoring a directory, this event will be triggered only for files
+/// within the directory.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_DELETE: uint32_t = 0x00000200;
 
-/// Event: Watched file or directory was deleted.
+/// Event: Watched file or directory was deleted
 ///
-/// This may also occur if the object is moved to another
-/// filesystem, since [mv(1)] in effect copies the file to the
-/// other filesystem and then deletes it from the original.
+/// This may also occur if the object is moved to another filesystem, since
+/// [mv(1)] in effect copies the file to the other filesystem and then deletes
+/// it from the original.
 ///
 /// An IN_IGNORED event will subsequently be generated.
 ///
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// See [man page] for additional details.
+///
 /// [mv(1)]: http://man7.org/linux/man-pages/man1/mv.1.html
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_DELETE_SELF: uint32_t = 0x00000400;
 
-/// Event: Watched file or directory was moved.
+/// Event: Watched file or directory was moved
+///
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_MOVE_SELF: uint32_t = 0x00000800;
 
-/// Event: File or directory was moved away or in.
+/// Event: File or directory within watched directory was moved
 ///
-/// When monitoring a directory, the event may occur *only* for
-/// the files within, not the directory itself.
+/// This is a combination of [`IN_MOVED_FROM`] and [`IN_MOVED_TO`].
+///
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// See [man page] for additional details.
+///
+/// [`IN_MOVED_FROM`]: constant.IN_MOVED_FROM.html
+/// [`IN_MOVED_TO`]: constant.IN_MOVED_TO.html
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_MOVE: uint32_t = (IN_MOVED_FROM | IN_MOVED_TO);
 
-/// Event: File opened was closed.
+/// Event: File was closed
 ///
-/// When monitoring a directory, the event may occur both for the
-/// directory itself and the files within.
+/// This is a combination of [`IN_CLOSE_WRITE`] and [`IN_CLOSE_NOWRITE`].
+///
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in this type of event, or it can be used to check (via [`inotify_event`]'s
+/// [`mask`] field) whether an event is of this type.
+///
+/// See [man page] for additional details.
+///
+/// [`IN_CLOSE_WRITE`]: constant.IN_CLOSE_WRITE.html
+/// [`IN_CLOSE_NOWRITE`]: constant.IN_CLOSE_NOWRITE.html
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [`inotify_event`]: struct.inotify_event.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_CLOSE: uint32_t = (IN_CLOSE_WRITE | IN_CLOSE_NOWRITE);
 
-/// Event: Any event occured.
+/// Event: Any event occured
+///
+/// This is a combination of all the other event constants:
+///
+/// - [`IN_ACCESS`]
+/// - [`IN_ATTRIB`]
+/// - [`IN_CLOSE_WRITE`]
+/// - [`IN_CLOSE_NOWRITE`]
+/// - [`IN_MODIFY`]
+/// - [`IN_CREATE`]
+/// - [`IN_DELETE`]
+/// - [`IN_DELETE_SELF`]
+/// - [`IN_MODIFY`]
+/// - [`IN_MOVE_SELF`]
+/// - [`IN_MOVED_FROM`]
+/// - [`IN_MOVED_TO`]
+/// - [`IN_OPEN`]
+///
+/// This constant can be passed to [`inotify_add_watch`], to register interest
+/// in any type of event.
+///
+/// See [man page] for additional details.
+///
+/// [`IN_ACCESS`]: constant.IN_ACCESS.html
+/// [`IN_ATTRIB`]: constant.IN_ATTRIB.html
+/// [`IN_CLOSE_WRITE`]: constant.IN_CLOSE_WRITE.html
+/// [`IN_CLOSE_NOWRITE`]: constant.IN_CLOSE_NOWRITE.html
+/// [`IN_MODIFY`]: constant.IN_MODIFY.html
+/// [`IN_CREATE`]: constant.IN_CREATE.html
+/// [`IN_DELETE`]: constant.IN_DELETE.html
+/// [`IN_DELETE_SELF`]: constant.IN_DELETE_SELF.html
+/// [`IN_MODIFY`]: constant.IN_MODIFY.html
+/// [`IN_MOVE_SELF`]: constant.IN_MOVE_SELF.html
+/// [`IN_MOVED_FROM`]: constant.IN_MOVED_FROM.html
+/// [`IN_MOVED_TO`]: constant.IN_MOVED_TO.html
+/// [`IN_OPEN`]: constant.IN_OPEN.html
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_ALL_EVENTS: uint32_t = (
     IN_ACCESS | IN_MODIFY | IN_ATTRIB | IN_CLOSE_WRITE | IN_CLOSE_NOWRITE
     | IN_OPEN | IN_MOVED_FROM | IN_MOVED_TO | IN_CREATE | IN_DELETE
     | IN_DELETE_SELF | IN_MOVE_SELF);
 
-/// Option: Don't watch children (if self is a directory).
+/// Only watch path, if it is a directory
+///
+/// This bit can be set in [`inotify_add_watch`]'s `mask` parameter, to
+/// configure the watch.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_ONLYDIR: uint32_t = 0x01000000;
 
-/// Option: Don't dereference (if self is a symlink).
+/// Don't dereference path, if it is a symbolic link
+///
+/// This bit can be set in [`inotify_add_watch`]'s `mask` parameter, to
+/// configure the watch.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_DONT_FOLLOW: uint32_t = 0x02000000;
 
-/// Option: Don't watch unlinked children.
+/// Ignore events for children, that have been unlinked from watched directory
 ///
-/// > By default, when watching events on the children of a
-/// > directory, events are generated for children even after
-/// > they have been unlinked from the directory.  This can
-/// > result in large numbers of uninteresting events for some
-/// > applications (e.g., if watching /tmp, in which many
-/// > applications create temporary files whose names are
-/// > immediately unlinked).
-/// >
-/// > IN_EXCL_UNLINK changes this behavior, so that events are
-/// > not generated for children after they have been unlinked
-/// > from the watched directory.
+/// This bit can be set in [`inotify_add_watch`]'s `mask` parameter, to
+/// configure the watch.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_EXCL_UNLINK: uint32_t = 0x04000000;
 
-/// Option: Add events to an existing watch instead of replacing it.
+/// Update existing watch mask, instead of replacing it
 ///
-/// > If a watch instance already exists for the filesystem
-/// > object corresponding to self, add (|) the events to the
-/// > watch mask instead of replacing it.
+/// This bit can be set in [`inotify_add_watch`]'s `mask` parameter, to
+/// configure the watch.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_MASK_ADD: uint32_t = 0x20000000;
 
-/// Option: Listen for one event, then remove the watch.
+/// Remove watch after one event
+///
+/// This bit can be set in [`inotify_add_watch`]'s `mask` parameter, to
+/// configure the watch.
+///
+/// See [man page] for additional details.
+///
+/// [`inotify_add_watch`]: fn.inotify_add_watch.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_ONESHOT: uint32_t = 0x80000000;
 
-/// Info: Subject of this event is a directory.
+/// Indicates that the subject of an event is a directory
+///
+/// This constant can be used to check against the [`mask`] field in
+/// [`inotify_event`].
+///
+/// See [man page] for additional details.
+///
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [`inotify_event`]: struct.inotify_event.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_ISDIR: uint32_t = 0x40000000;
 
-/// Info: Filesystem containing self was unmounted.
+/// Indicates that file system containing a watched object has been unmounted
 ///
-/// An IN_IGNORED event will subsequently be generated.
+/// An [`IN_IGNORED`] event will be generated subsequently.
+///
+/// This constant can be used to check against the [`mask`] field in
+/// [`inotify_event`].
+///
+/// See [man page] for additional details.
+///
+/// [`IN_IGNORED`]: constant.IN_IGNORED.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [`inotify_event`]: struct.inotify_event.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_UNMOUNT: uint32_t = 0x00002000;
 
-/// Info: Event queue overflowed.
+/// Indicates that the event queue has overflowed
+///
+/// This constant can be used to check against the [`mask`] field in
+/// [`inotify_event`].
+///
+/// See [man page] for additional details.
+///
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [`inotify_event`]: struct.inotify_event.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_Q_OVERFLOW: uint32_t = 0x00004000;
 
-/// Info: Watch was removed.
+/// Indicates that a file system watch was removed
 ///
-/// This can occur either as a result of `inotify_rm_watch()`,
-/// or because self was deleted or the containing filesystem
-/// was unmounted, or after an IN_ONESHOT watch is complete.
+/// This can occur as a result of [`inotify_rm_watch`], because a watched item
+///  was deleted, the containing filesystem was unmounted, or after a
+/// [`IN_ONESHOT`] watch is complete.
 ///
-/// See the BUGS section of [inotify(7)] for more details.
+/// This constant can be used to check against the [`mask`] field in
+/// [`inotify_event`].
 ///
-/// [inotify(7)]: http://man7.org/linux/man-pages/man7/inotify.7.html
+/// See [man page] for additional details.
+///
+/// [`inotify_rm_watch`]: fn.inotify_rm_watch.html
+/// [`IN_ONESHOT`]: constant.IN_ONESHOT.html
+/// [`mask`]: struct.inotify_event.html#structfield.mask
+/// [`inotify_event`]: struct.inotify_event.html
+/// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_IGNORED: uint32_t = 0x00008000;
 
 
