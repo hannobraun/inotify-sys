@@ -2,39 +2,32 @@
 #![deny(warnings)]
 
 
-//! Bindings for inotify
+//! # inotify bindings for the Rust programming language
 //!
-//! There are four types of statics:
+//! Please note that these are direct, low-level bindings to C functions that
+//! form the inotify C API. Unless you have a specific reason to use this crate,
+//! [inotify-rs], which is an idiomatic wrapper, is a much better choice.
 //!
-//! - __Flags__, to be passed to [`inotify_init1()`];
-//! - __Events__, that describe which events should be
-//!   watched for (when calling [`inotify_add_watch()`]),
-//!   and which event has occured (when returned by
-//!   [`read()`]);
-//! - __Options__, which can be added to the bit mask
-//!   passed to [`inotify_add_watch()`], to change default
-//!   behavior;
-//! - __Infos__, indicating further details of the event
-//!   that occured (returned by [`read()`]).
+//! ## Usage
 //!
-//! When events occur for monitored files and directories, those events
-//! are made available to the application as structured data that can
-//! be read from the inotify file descriptor using [`read()`].
+//! In general, inotify usage follows the following pattern:
 //!
-//! When all file descriptors referring to an inotify instance have been
-//! closed (using [`close()`]), the underlying object and its resources
-//! are freed for reuse by the kernel; all associated watches are
-//! automatically freed.
+//! 1. Create an inotify instance using [`inotify_init`] or [`inotify_init1`].
+//! 2. Manage watches with [`inotify_add_watch`] and [`inotify_rm_watch`].
+//! 3. Read event using [`read`].
+//! 4. Close the inotify instance using [`close`], once you're done.
 //!
-//! A programmer wanting to use inotify should also carefully read through
-//! the [inotify(7)] man page, which contains many caveats, warnings, and
-//! recommendations for proper, robust, and efficient usage of inotify.
+//! Please refer to the [inotify man page] and the rest of this documentation
+//! for full details.
 //!
-//! [`inotify_init1()`]: fn.inotify_init1.html
-//! [`inotify_add_watch()`]: fn.inotify_add_watch.html
-//! [`read()`]: ../libc/fn.read.html
-//! [`close()`]: ../libc/fn.close.html
-//! [inotify(7)]: http://man7.org/linux/man-pages/man7/inotify.7.html
+//! [inotify-rs]: https://crates.io/crates/inotify
+//! [`inotify_init`]: fn.inotify_init.html
+//! [`inotify_init1`]: fn.inotify_init1.html
+//! [`inotify_add_watch`]: fn.inotify_add_watch.html
+//! [`inotify_rm_watch`]: fn.inotify_rm_watch.html
+//! [`read`]: fn.read.html
+//! [`close`]: fn.close.html
+//! [inotify man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 
 
 extern crate libc;
