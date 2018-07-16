@@ -55,7 +55,7 @@ use libc::{
 /// [execve(2)]: http://man7.org/linux/man-pages/man2/execve.2.html
 /// [open(2)]: http://man7.org/linux/man-pages/man2/open.2.html
 /// [fcntl(2)]: http://man7.org/linux/man-pages/man2/fcntl.2.html
-pub const IN_CLOEXEC: c_int = 0o2000000;
+pub const IN_CLOEXEC: c_int = libc::O_CLOEXEC;
 
 /// Set an inotify instance to non-blocking mode
 ///
@@ -66,7 +66,7 @@ pub const IN_CLOEXEC: c_int = 0o2000000;
 ///
 /// [`inotify_init1`]: fn.inotify_init1.html
 /// [open(2)]: http://man7.org/linux/man-pages/man2/open.2.html
-pub const IN_NONBLOCK: c_int = 0o4000;
+pub const IN_NONBLOCK: c_int = libc::O_NONBLOCK;
 
 /// Event: File was accessed
 ///
