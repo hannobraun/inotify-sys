@@ -1,6 +1,6 @@
 [package]
 name    = "inotify-sys"
-version = "0.1.3-dev"
+version = "0.1.4-dev"
 authors = ["Hanno Braun <hb@hannobraun.de>"]
 
 description   = "inotify bindings for the Rust programming language"
