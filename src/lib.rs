@@ -1,7 +1,6 @@
 #![deny(missing_docs)]
 #![deny(warnings)]
 
-
 //! # inotify bindings for the Rust programming language
 //!
 //! Please note that these are direct, low-level bindings to C functions that
@@ -29,15 +28,9 @@
 //! [`close`]: fn.close.html
 //! [inotify man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 
-
 extern crate libc;
 
-
-use libc::{
-    c_char,
-    c_int,
-    uint32_t };
-
+use libc::{c_char, c_int, uint32_t};
 
 /// Set the `FD_CLOEXEC` flag for an inotify instance
 ///
@@ -363,10 +356,18 @@ pub const IN_CLOSE: uint32_t = (IN_CLOSE_WRITE | IN_CLOSE_NOWRITE);
 /// [`IN_OPEN`]: constant.IN_OPEN.html
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ALL_EVENTS: uint32_t = (
-    IN_ACCESS | IN_MODIFY | IN_ATTRIB | IN_CLOSE_WRITE | IN_CLOSE_NOWRITE
-    | IN_OPEN | IN_MOVED_FROM | IN_MOVED_TO | IN_CREATE | IN_DELETE
-    | IN_DELETE_SELF | IN_MOVE_SELF);
+pub const IN_ALL_EVENTS: uint32_t = (IN_ACCESS
+    | IN_MODIFY
+    | IN_ATTRIB
+    | IN_CLOSE_WRITE
+    | IN_CLOSE_NOWRITE
+    | IN_OPEN
+    | IN_MOVED_FROM
+    | IN_MOVED_TO
+    | IN_CREATE
+    | IN_DELETE
+    | IN_DELETE_SELF
+    | IN_MOVE_SELF);
 
 /// Only watch path, if it is a directory
 ///
@@ -480,7 +481,6 @@ pub const IN_Q_OVERFLOW: uint32_t = 0x00004000;
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
 pub const IN_IGNORED: uint32_t = 0x00008000;
 
-
 /// Describes a file system event
 ///
 /// From [inotify(7)]:
@@ -584,8 +584,7 @@ pub struct inotify_event {
     pub len: uint32_t,
 }
 
-
-extern {
+extern "C" {
     /// Creates an inotify instance
     ///
     /// If you need more flexibility, consider using [`inotify_init1`] instead.
@@ -707,7 +706,4 @@ extern {
     pub fn inotify_rm_watch(fd: c_int, wd: c_int) -> c_int;
 }
 
-pub use libc::{
-    close,
-    read,
-};
+pub use libc::{close, read};
