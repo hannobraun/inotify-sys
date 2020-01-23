@@ -36,7 +36,7 @@ extern crate libc;
 use libc::{
     c_char,
     c_int,
-    uint32_t };
+};
 
 
 /// Set the `FD_CLOEXEC` flag for an inotify instance
@@ -83,7 +83,7 @@ pub const IN_NONBLOCK: c_int = libc::O_NONBLOCK;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ACCESS: uint32_t = 0x00000001;
+pub const IN_ACCESS: u32 = 0x00000001;
 
 /// Event: File was modified
 ///
@@ -100,7 +100,7 @@ pub const IN_ACCESS: uint32_t = 0x00000001;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_MODIFY: uint32_t = 0x00000002;
+pub const IN_MODIFY: u32 = 0x00000002;
 
 /// Event: Metadata was changed
 ///
@@ -131,7 +131,7 @@ pub const IN_MODIFY: uint32_t = 0x00000002;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ATTRIB: uint32_t = 0x00000004;
+pub const IN_ATTRIB: u32 = 0x00000004;
 
 /// Event: Writable file was closed
 ///
@@ -148,7 +148,7 @@ pub const IN_ATTRIB: uint32_t = 0x00000004;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_CLOSE_WRITE: uint32_t = 0x00000008;
+pub const IN_CLOSE_WRITE: u32 = 0x00000008;
 
 /// Event: Non-writable file or directory was closed
 ///
@@ -165,7 +165,7 @@ pub const IN_CLOSE_WRITE: uint32_t = 0x00000008;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_CLOSE_NOWRITE: uint32_t = 0x00000010;
+pub const IN_CLOSE_NOWRITE: u32 = 0x00000010;
 
 /// Event: File or directory was opened
 ///
@@ -182,7 +182,7 @@ pub const IN_CLOSE_NOWRITE: uint32_t = 0x00000010;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_OPEN: uint32_t = 0x00000020;
+pub const IN_OPEN: u32 = 0x00000020;
 
 /// Event: File or directory was moved out of watched directory
 ///
@@ -197,7 +197,7 @@ pub const IN_OPEN: uint32_t = 0x00000020;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_MOVED_FROM: uint32_t = 0x00000040;
+pub const IN_MOVED_FROM: u32 = 0x00000040;
 
 /// Event: File or directory was moved into watched directory
 ///
@@ -214,7 +214,7 @@ pub const IN_MOVED_FROM: uint32_t = 0x00000040;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_MOVED_TO: uint32_t = 0x00000080;
+pub const IN_MOVED_TO: u32 = 0x00000080;
 
 /// Event: File or directory was created in watched directory
 ///
@@ -233,7 +233,7 @@ pub const IN_MOVED_TO: uint32_t = 0x00000080;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_CREATE: uint32_t = 0x00000100;
+pub const IN_CREATE: u32 = 0x00000100;
 
 /// Event: File or directory in watched directory was deleted
 ///
@@ -252,7 +252,7 @@ pub const IN_CREATE: uint32_t = 0x00000100;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_DELETE: uint32_t = 0x00000200;
+pub const IN_DELETE: u32 = 0x00000200;
 
 /// Event: Watched file or directory was deleted
 ///
@@ -273,7 +273,7 @@ pub const IN_DELETE: uint32_t = 0x00000200;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_DELETE_SELF: uint32_t = 0x00000400;
+pub const IN_DELETE_SELF: u32 = 0x00000400;
 
 /// Event: Watched file or directory was moved
 ///
@@ -287,7 +287,7 @@ pub const IN_DELETE_SELF: uint32_t = 0x00000400;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_MOVE_SELF: uint32_t = 0x00000800;
+pub const IN_MOVE_SELF: u32 = 0x00000800;
 
 /// Event: File or directory within watched directory was moved
 ///
@@ -305,7 +305,7 @@ pub const IN_MOVE_SELF: uint32_t = 0x00000800;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_MOVE: uint32_t = (IN_MOVED_FROM | IN_MOVED_TO);
+pub const IN_MOVE: u32 = (IN_MOVED_FROM | IN_MOVED_TO);
 
 /// Event: File was closed
 ///
@@ -323,7 +323,7 @@ pub const IN_MOVE: uint32_t = (IN_MOVED_FROM | IN_MOVED_TO);
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_CLOSE: uint32_t = (IN_CLOSE_WRITE | IN_CLOSE_NOWRITE);
+pub const IN_CLOSE: u32 = (IN_CLOSE_WRITE | IN_CLOSE_NOWRITE);
 
 /// Event: Any event occured
 ///
@@ -363,7 +363,7 @@ pub const IN_CLOSE: uint32_t = (IN_CLOSE_WRITE | IN_CLOSE_NOWRITE);
 /// [`IN_OPEN`]: constant.IN_OPEN.html
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ALL_EVENTS: uint32_t = (
+pub const IN_ALL_EVENTS: u32 = (
     IN_ACCESS | IN_MODIFY | IN_ATTRIB | IN_CLOSE_WRITE | IN_CLOSE_NOWRITE
     | IN_OPEN | IN_MOVED_FROM | IN_MOVED_TO | IN_CREATE | IN_DELETE
     | IN_DELETE_SELF | IN_MOVE_SELF);
@@ -377,7 +377,7 @@ pub const IN_ALL_EVENTS: uint32_t = (
 ///
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ONLYDIR: uint32_t = 0x01000000;
+pub const IN_ONLYDIR: u32 = 0x01000000;
 
 /// Don't dereference path, if it is a symbolic link
 ///
@@ -388,7 +388,7 @@ pub const IN_ONLYDIR: uint32_t = 0x01000000;
 ///
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_DONT_FOLLOW: uint32_t = 0x02000000;
+pub const IN_DONT_FOLLOW: u32 = 0x02000000;
 
 /// Ignore events for children, that have been unlinked from watched directory
 ///
@@ -399,7 +399,7 @@ pub const IN_DONT_FOLLOW: uint32_t = 0x02000000;
 ///
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_EXCL_UNLINK: uint32_t = 0x04000000;
+pub const IN_EXCL_UNLINK: u32 = 0x04000000;
 
 /// Update existing watch mask, instead of replacing it
 ///
@@ -410,7 +410,7 @@ pub const IN_EXCL_UNLINK: uint32_t = 0x04000000;
 ///
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_MASK_ADD: uint32_t = 0x20000000;
+pub const IN_MASK_ADD: u32 = 0x20000000;
 
 /// Remove watch after one event
 ///
@@ -421,7 +421,7 @@ pub const IN_MASK_ADD: uint32_t = 0x20000000;
 ///
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ONESHOT: uint32_t = 0x80000000;
+pub const IN_ONESHOT: u32 = 0x80000000;
 
 /// Indicates that the subject of an event is a directory
 ///
@@ -433,7 +433,7 @@ pub const IN_ONESHOT: uint32_t = 0x80000000;
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [`inotify_event`]: struct.inotify_event.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ISDIR: uint32_t = 0x40000000;
+pub const IN_ISDIR: u32 = 0x40000000;
 
 /// Indicates that file system containing a watched object has been unmounted
 ///
@@ -448,7 +448,7 @@ pub const IN_ISDIR: uint32_t = 0x40000000;
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [`inotify_event`]: struct.inotify_event.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_UNMOUNT: uint32_t = 0x00002000;
+pub const IN_UNMOUNT: u32 = 0x00002000;
 
 /// Indicates that the event queue has overflowed
 ///
@@ -460,7 +460,7 @@ pub const IN_UNMOUNT: uint32_t = 0x00002000;
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [`inotify_event`]: struct.inotify_event.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_Q_OVERFLOW: uint32_t = 0x00004000;
+pub const IN_Q_OVERFLOW: u32 = 0x00004000;
 
 /// Indicates that a file system watch was removed
 ///
@@ -478,7 +478,7 @@ pub const IN_Q_OVERFLOW: uint32_t = 0x00004000;
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [`inotify_event`]: struct.inotify_event.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_IGNORED: uint32_t = 0x00008000;
+pub const IN_IGNORED: u32 = 0x00008000;
 
 
 /// Describes a file system event
@@ -555,7 +555,7 @@ pub struct inotify_event {
     /// [`IN_OPEN`]: constant.IN_OPEN.html
     /// [`IN_Q_OVERFLOW`]: constant.IN_Q_OVERFLOW.html
     /// [`IN_UNMOUNT`]: constant.IN_UNMOUNT.html
-    pub mask: uint32_t,
+    pub mask: u32,
 
     /// A number that connects related events
     ///
@@ -565,7 +565,7 @@ pub struct inotify_event {
     ///
     /// [`IN_MOVED_FROM`]: constant.IN_MOVED_FROM.html
     /// [`IN_MOVED_TO`]: constant.IN_MOVED_TO.html
-    pub cookie: uint32_t,
+    pub cookie: u32,
 
     /// The length of `name`
     ///
@@ -581,7 +581,7 @@ pub struct inotify_event {
     /// > align subsequent reads to a suitable address boundary.
     ///
     /// The `name` field has been ommited in this struct's definition.
-    pub len: uint32_t,
+    pub len: u32,
 }
 
 
@@ -691,7 +691,7 @@ extern {
     /// [`inotify_event`]: struct.inotify_event.html
     /// [`wd`]: struct.inotify_event.html#structfield.wd
     /// [man page]: http://man7.org/linux/man-pages/man2/inotify_add_watch.2.html
-    pub fn inotify_add_watch(fd: c_int, pathname: *const c_char, mask: uint32_t) -> c_int;
+    pub fn inotify_add_watch(fd: c_int, pathname: *const c_char, mask: u32) -> c_int;
 
     /// Removes an inotify watch
     ///
