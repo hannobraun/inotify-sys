@@ -5,7 +5,7 @@ authors = ["Hanno Braun <hb@hannobraun.de>"]
 
 description   = "inotify bindings for the Rust programming language"
 documentation = "https://docs.rs/inotify-sys"
-repository    = "https://github.com/inotify-rs/inotify-sys"
+repository    = "https://github.com/hannobraun/inotify-sys"
 license       = "ISC"
 readme        = "README.md"
 
