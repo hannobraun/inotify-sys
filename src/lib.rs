@@ -1,5 +1,4 @@
 #![deny(missing_docs)]
-#![deny(warnings)]
 
 
 //! # inotify bindings for the Rust programming language
