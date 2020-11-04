@@ -304,7 +304,7 @@ pub const IN_MOVE_SELF: u32 = 0x00000800;
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_MOVE: u32 = (IN_MOVED_FROM | IN_MOVED_TO);
+pub const IN_MOVE: u32 = IN_MOVED_FROM | IN_MOVED_TO;
 
 /// Event: File was closed
 ///
@@ -322,7 +322,7 @@ pub const IN_MOVE: u32 = (IN_MOVED_FROM | IN_MOVED_TO);
 /// [`inotify_event`]: struct.inotify_event.html
 /// [`mask`]: struct.inotify_event.html#structfield.mask
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_CLOSE: u32 = (IN_CLOSE_WRITE | IN_CLOSE_NOWRITE);
+pub const IN_CLOSE: u32 = IN_CLOSE_WRITE | IN_CLOSE_NOWRITE;
 
 /// Event: Any event occured
 ///
@@ -362,10 +362,10 @@ pub const IN_CLOSE: u32 = (IN_CLOSE_WRITE | IN_CLOSE_NOWRITE);
 /// [`IN_OPEN`]: constant.IN_OPEN.html
 /// [`inotify_add_watch`]: fn.inotify_add_watch.html
 /// [man page]: http://man7.org/linux/man-pages/man7/inotify.7.html
-pub const IN_ALL_EVENTS: u32 = (
+pub const IN_ALL_EVENTS: u32 =
     IN_ACCESS | IN_MODIFY | IN_ATTRIB | IN_CLOSE_WRITE | IN_CLOSE_NOWRITE
     | IN_OPEN | IN_MOVED_FROM | IN_MOVED_TO | IN_CREATE | IN_DELETE
-    | IN_DELETE_SELF | IN_MOVE_SELF);
+    | IN_DELETE_SELF | IN_MOVE_SELF;
 
 /// Only watch path, if it is a directory
 ///
