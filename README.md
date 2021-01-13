@@ -5,7 +5,7 @@ Low-level [inotify] bindings for the [Rust programming language]. This crate's m
 
 ## License
 
-Copyright (c) 2014-2017, Hanno Braun and contributors
+Copyright (c) Hanno Braun and contributors
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
 with or without fee is hereby granted, provided that the above copyright notice
