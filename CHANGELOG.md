@@ -1,3 +1,5 @@
+# Changelog
+
 ### v0.1.5 (2021-01-16)
 
 - Add LICENSE file ([#21])
