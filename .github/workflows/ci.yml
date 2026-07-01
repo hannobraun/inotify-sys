@@ -17,13 +17,16 @@ jobs:
   test-freebsd:
     name: Test (FreeBSD)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+          shell: cpa.sh {0}
     steps:
       - uses: actions/checkout@v4
       - name: Test on FreeBSD
-        uses: cross-platform-actions/action@v0.25.0
+        uses: cross-platform-actions/action@v1.3.0
         with:
           operating_system: freebsd
-          version: "14.2"
-          run: |
-            sudo pkg install -y libinotify rust
-            cargo test
+          version: "15.1"
+      - run: |
+          sudo pkg install -y libinotify rust
+          cargo test
