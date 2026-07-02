@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.7 (2026-07-02)
+
+- Add `freebsd-native` feature to bypass libnotify on FreeBSD ([#26])
+
+[#26]: https://github.com/hannobraun/inotify-sys/pull/26
+
 ## v0.1.6 (2026-07-01)
 
 - Add support for FreeBSD via libinotify ([#25], [#28])
