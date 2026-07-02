@@ -14,5 +14,10 @@ keywords   = ["inotify", "linux", "freebsd", "bsd"]
 categories = ["external-ffi-bindings", "filesystem"]
 exclude    = ["/.travis.yml", "/inotify-sys.sublime-project"]
 
+[features]
+# Skip linking the userspace `libinotify` shim on FreeBSD and rely on the
+# inotify(2) wrappers provided by libc on FreeBSD 14.4+.
+freebsd-native = []
+
 [dependencies]
 libc = "0.2"
