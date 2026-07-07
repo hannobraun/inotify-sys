@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.8 (2026-07-07)
+
+- Use native inotify on FreeBSD unconditionally ([#32])
+
+[#32]: https://github.com/hannobraun/inotify-sys/pull/32
+
 ## v0.1.7 (2026-07-02)
 
 - Add `freebsd-native` feature to bypass libnotify on FreeBSD ([#26])
