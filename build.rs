@@ -1,16 +1,13 @@
 fn main() {
-    // On BSD systems, inotify is historically provided by a userspace library
+    // On NetBSD and OpenBSD, inotify is provided by a userspace library
     // (libinotify) rather than the kernel. Link against it when building for
     // those targets.
     //
-    // FreeBSD 14.4+ ships in-kernel inotify with libc wrappers in libc.so.7;
-    // when the `freebsd-native` feature is enabled we skip linking libinotify
-    // and let the extern declarations resolve against libc directly.
+    // FreeBSD ships native inotify support with libc wrappers in libc.so.7, so
+    // the extern declarations resolve against libc directly there.
     let target_os = std::env::var("CARGO_CFG_TARGET_OS").unwrap();
-    let freebsd_native = std::env::var("CARGO_FEATURE_FREEBSD_NATIVE").is_ok();
 
     let needs_libinotify = match target_os.as_str() {
-        "freebsd" => !freebsd_native,
         "netbsd" | "openbsd" => true,
         _ => false,
     };
