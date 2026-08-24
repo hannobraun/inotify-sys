@@ -12,7 +12,7 @@ build         = "build.rs"
 
 keywords   = ["inotify", "linux", "freebsd", "bsd"]
 categories = ["external-ffi-bindings", "filesystem"]
-exclude    = ["/.travis.yml", "/inotify-sys.sublime-project"]
+exclude    = ["/.travis.yml", "/.github/", ".gitignore", "/inotify-sys.sublime-project"]
 
 [features]
 # This feature no longer changes behavior and should not be used. It is kept
